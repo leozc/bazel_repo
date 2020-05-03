@@ -14,9 +14,16 @@ http_archive(
 load("@rules_python//python:repositories.bzl", "py_repositories")
 py_repositories()
 # Only needed if using the packaging rules.
-load("@rules_python//python:pip.bzl", "pip_repositories")
+load("@rules_python//python:pip.bzl", "pip_repositories","pip_import")
 pip_repositories()
 
+pip_import(
+    name = '3rdparty',
+    requirements = '//:requirements.txt',
+    #python_interpreter = 'xxx',
+)
+load("@3rdparty//:requirements.bzl", "pip_install")
+pip_install()
 
 # SCALA
 

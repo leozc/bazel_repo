@@ -1,13 +1,12 @@
 package(default_visibility = ["//visibility:public"])
-load("@rules_python//python:defs.bzl", "py_binary")
-load("@rules_python//python:pip.bzl", "pip_import")
+load("@rules_python//python:defs.bzl", "py_binary", "py_test", "py_library")
 
+
+load("@3rdparty//:requirements.bzl", "requirement")
 py_library(
     name = "lib",
     srcs = ["lib.py"],
 )
-
-
 
 filegroup(
     name = "srcs",
@@ -58,13 +57,19 @@ py_library(
     srcs = ["sample.py"],
 )
 
+# run with unzip -l bazel-bin/py_helloworld/runnable_bin.zip
+# view with unzip -l bazel-bin/py_helloworld/runnable_bin.zip
 py_binary(
-    name = "bin",
+    name = "runnable_bin",
     srcs = ["bin.py"],
-    deps = [":lib"],
-    srcs_version="PY3"
+    deps = [
+        ":lib",
+        requirement("numpy"),
+        ],
+    main = "bin.py",
+    srcs_version="PY3",
 )
-
+# Run test
 py_binary(
     name = "run_tests",
     main = "test/run.py",
