@@ -1,14 +1,10 @@
 package(default_visibility = ["//visibility:public"])
+load("@rules_python//python:defs.bzl", "py_binary")
+load("@rules_python//python:pip.bzl", "pip_import")
 
 py_library(
     name = "lib",
     srcs = ["lib.py"],
-)
-
-py_binary(
-    name = "bin",
-    srcs = ["bin.py"],
-    deps = [":lib"],
 )
 
 
@@ -60,6 +56,13 @@ py_library(
 py_library(
     name = "sample",
     srcs = ["sample.py"],
+)
+
+py_binary(
+    name = "bin",
+    srcs = ["bin.py"],
+    deps = [":lib"],
+    srcs_version="PY3"
 )
 
 py_binary(

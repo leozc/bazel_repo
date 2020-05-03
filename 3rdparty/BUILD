@@ -1,0 +1,1 @@
+#load(":workspace.bzl", "foo_binary")
