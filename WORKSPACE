@@ -4,7 +4,9 @@ workspace(name = "leozc_bazel")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-# Python
+#########
+# PYTHON
+#########
 # terrible second class support for python in bazel
 http_archive(
     name = "rules_python",
@@ -25,7 +27,9 @@ pip_import(
 load("@3rdparty//:requirements.bzl", "pip_install")
 pip_install()
 
+#########
 # SCALA
+#########
 
 # bazel-skylib (https://github.com/bazelbuild/bazel-skylib/releases/tag/1.0.2)
 skylib_version = "1.0.2"
@@ -62,11 +66,13 @@ http_archive(
     sha256 = protobuf_version_sha256,
 )
 
-#load("@bazel_tools//tools/build_defs/repo:maven_rules.bzl", "maven_dependency_plugin")
-#maven_dependency_plugin()
+load("@bazel_tools//tools/build_defs/repo:maven_rules.bzl", "maven_dependency_plugin")
+maven_dependency_plugin()
 
 #load("//3rdparty:workspace.bzl", "maven_dependencies")
 #maven_dependencies()
+#load("//3rdparty:target_file.bzl", "build_external_workspace")
+#build_external_workspace(name = "third_party")
 
 scala_repositories((
     "2.12.8",
@@ -79,7 +85,10 @@ scala_repositories((
 
 # end of scala support
 
-# JVM Dep
+
+#########
+# JVM DEP
+#########
 # REF https://github.com/bazelbuild/rules_jvm_external
 RULES_JVM_EXTERNAL_TAG = "3.0"
 RULES_JVM_EXTERNAL_SHA = "62133c125bf4109dfd9d2af64830208356ce4ef8b165a6ef15bbff7460b35c3a"
@@ -95,8 +104,9 @@ load("@rules_jvm_external//:defs.bzl", "maven_install")
 maven_install(
     artifacts = [
         "junit:junit:4.12",
-        "androidx.test.espresso:espresso-core:3.1.1",
-        "org.hamcrest:hamcrest-library:1.3",
+        "com.google.code.findbugs:jsr305:3.0.2",
+        "com.google.errorprone:error_prone_annotations:2.0.18",
+        "com.google.j2objc:j2objc-annotations:1.1",
     ],
     repositories = [
         # Private repositories are supported through HTTP Basic auth
