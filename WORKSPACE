@@ -102,6 +102,7 @@ http_archive(
 load("@rules_jvm_external//:defs.bzl", "maven_install")
 
 maven_install(
+    name = "default_maven",
     artifacts = [
         "junit:junit:4.12",
         "com.google.code.findbugs:jsr305:3.0.2",
@@ -114,12 +115,35 @@ maven_install(
        # "https://jcenter.bintray.com/",
         "https://maven.google.com",
         "https://jcenter.bintray.com/",
-        "https://repo1.maven.org/maven2",
+        
     ],
     fetch_sources = True,
-    maven_install_json = "//:maven_install.json",
+    # comment out the line below before ruuning `bazel run @default_maven//:pin`
+    # run this to update     bazel run @unpinned_default_maven//:pin
+    maven_install_json = "//:default_maven_install.json",
 )
-load("@maven//:defs.bzl", "pinned_maven_install")
-pinned_maven_install()
+load("@default_maven//:defs.bzl", default_maven_pinned_maven_install ="pinned_maven_install")
 
+default_maven_pinned_maven_install()
+
+maven_install(
+    name = "scala_maven",
+    artifacts = [
+        "org.apache.spark:spark-sql_2.12:2.4.5",
+        "org.apache.spark:spark-core_2.12:2.4.5",
+        "org.apache.spark:spark-tags_2.12:2.4.5",
+        "org.apache.spark:spark-unsafe_2.12:2.4.5",
+        "org.apache.spark:spark-catalyst_2.12:2.4.5",
+    ],
+    repositories = [
+        "https://repo1.maven.org/maven2",
+    ],
+    #fetch_sources = True,
+    # comment out the line below before ruuning `bazel run bazel run @scala_maven//:pin`
+    # to update `bazel run @unpinned_scala_maven//:pin`
+    maven_install_json = "//:scala_maven_install.json",
+)
+
+load("@scala_maven//:defs.bzl", scala_mave_pinned_maven_install = "pinned_maven_install")
+scala_mave_pinned_maven_install()
 # end of JVM support
